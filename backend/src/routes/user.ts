@@ -4,11 +4,12 @@ const user = new Hono()
 
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
-const prisma = new PrismaClient({
-  datasourceUrl: process.env.DATABASE_URL,
-}).$extends(withAccelerate())
 
 user.post(" /user/signup", (c) => {
+  const prisma = new PrismaClient({
+    //@ts-ignore
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate())
   return c.text("signup routes")
 })
 user.post(" /user/signin", (c) => {
@@ -27,5 +28,5 @@ user.get(" /blog/:id", (c) => {
 })
 user.get(" blog/bulk", (c) => {
   return c.text("all blogroutes")
-}) 
+})
 export default user;
