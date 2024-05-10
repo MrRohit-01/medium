@@ -10,8 +10,7 @@ const user = new Hono<{
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { Bindings } from 'hono/types'
-
-user.post(" /user/signup", async (c) => {
+user.post("/user/signup", async (c) => {
 
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -21,7 +20,7 @@ user.post(" /user/signup", async (c) => {
   const response = await prisma.user.create({
     data: {
       email: body.email,
-      password: body.password
+      password: body.password,
     },
     select: {
       email: true
@@ -33,7 +32,7 @@ user.post(" /user/signup", async (c) => {
 })
 
 
-user.post(" /user/signin", async (c) => {
+user.post("/user/signin", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate())
@@ -55,24 +54,24 @@ user.post(" /user/signin", async (c) => {
 })
 
 
-user.post(" /blog", (c) => {
+user.post("/blog", (c) => {
   return c.text("post blog routes")
 })
 
 
-user.put(" /blog", (c) => {
+user.put("/blog", (c) => {
   return c.text("blog update routes")
 })
 
 
-user.get(" /blog/:id", (c) => {
+user.get("/blog/:id", (c) => {
   const id = c.req.param('id')
   console.log(id)
   return c.text("get blog by id routes")
 })
 
 
-user.get(" blog/bulk", (c) => {
+user.get("/blog/bulk", (c) => {
   return c.text("all blogroutes")
 })
 
