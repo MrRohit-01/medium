@@ -79,6 +79,7 @@ userRoutes.post('/blog',async (c) => {
         context: body.context
       },
       select:{
+        id:true,
         title:true,
         context:true
       }
@@ -87,18 +88,75 @@ userRoutes.post('/blog',async (c) => {
 })
 
 
-userRoutes.put('/blog', (c) => {
-  return c.text('blog update routes')
+userRoutes.put('/blog',async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate())
+
+  const bearerToken = c.req.header('authorization')
+  const body = await c.req.json()
+  const token = bearerToken?.split(" ")[1]
+    if(!token){
+      return c.text("access denied")
+    
+    }
+    const verifyResponse =await verify(token,c.env.JWT_SECRET)
+    const user = await prisma.user.findUnique({
+     where:{
+       id : verifyResponse.id,
+     },
+     select:{
+       id:true
+      }
+    })
+    if(!user){
+      return c.text("user doesn't exist")
+    }
+    const response = await prisma.post.update({
+      where:{
+        id:body.id,
+      },
+      data:{
+        title:body.title,
+        context:body.context
+      },
+      select:{
+        id:true,
+        title:true
+      }
+    })
+ return c.json({response})
 })
 
 
-userRoutes.get('/blog/:id', (c) => {
+userRoutes.get('/blog/:id',async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate())
   const id = c.req.param('id')
-  console.log(id)
-  return c.text('get blog by id routes')
+  const response = await prisma.post.findUnique({
+    where:{
+      id:id,
+    },
+    select:{
+      title:true,
+      context:true
+    }
+  })
+  return c.json({response})
 })
 
 
-userRoutes.get('/blog/bulk', (c) => {
-  return c.text('all blogroutes')
+userRoutes.get('/blog/bulk',async (c) => {
+
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate())
+  const response = await prisma.post.findMany({
+    select:{
+      title:true,
+      context:true
+    }
+  })
+  return c.json({response})
 })
