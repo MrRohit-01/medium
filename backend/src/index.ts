@@ -1,8 +1,14 @@
-import { Hono } from 'hono'
-import user from './routes/user';
+import { Hono } from 'hono';
+import { userRoutes } from './routes/user';
+const app = new Hono<{
+  Bindings: {
+    DATABASE_URL: string,
+    JWT_SECRET: string
+  }
+}>()
 
 
-const app = new Hono()
 
+app.route("/api/v1",userRoutes)
 
-app.route("/api/v1",user);
+export default app;
