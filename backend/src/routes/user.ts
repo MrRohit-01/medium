@@ -3,19 +3,24 @@ import { Hono } from 'hono'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { decode, sign, verify } from 'hono/jwt'
+import { Signin,SigninType,Post,PostType,PutType} from '../zod/validateInput'
+
 export const userRoutes = new Hono<{
   Bindings: {
     DATABASE_URL:string,
     JWT_SECRET: string,
   }
 }>()
-
 userRoutes.post('/user/signup', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate())
 
-    const body = await c.req.json();
+    const body =<SigninType> await c.req.json();
+    const {success} = Signin.safeParse(body)
+    if(!success){
+      return c.json({msg:"invalid schema"})
+    }
     const response = await prisma.user.create({
       data: {
         email: body.email,
@@ -24,7 +29,7 @@ userRoutes.post('/user/signup', async (c) => {
     })
     const token = await sign({ id: response.id }, c.env.JWT_SECRET)
     return c.json({ jwt: token });
-
+  
 })
 
 
@@ -33,7 +38,11 @@ userRoutes.post('/user/signin', async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate())
 
-  const body = await c.req.json();
+  const body =<SigninType> await c.req.json();
+  const {success} = Signin.safeParse(body)
+  if(!success){
+    return c.json({msg:"invalid schema"})
+  }
   const user = await prisma.user.findUnique({
     where: {
       email: body.email
@@ -54,7 +63,13 @@ userRoutes.post('/blog',async (c) => {
   }).$extends(withAccelerate())
 
   const bearerToken = c.req.header('authorization')
-  const body = await c.req.json()
+  const body =<PostType> await c.req.json()
+  const {success} = Post.safeParse(body)
+  if(!success){
+    return c.json({
+      msg: "error schema"
+    })
+  }
   const token = bearerToken?.split(" ")[1]
     if(!token){
       return c.text("access denied")
@@ -94,7 +109,7 @@ userRoutes.put('/blog',async (c) => {
   }).$extends(withAccelerate())
 
   const bearerToken = c.req.header('authorization')
-  const body = await c.req.json()
+  const body =<PutType> await c.req.json()
   const token = bearerToken?.split(" ")[1]
     if(!token){
       return c.text("access denied")
