@@ -1,7 +1,11 @@
-import { Context } from "hono"
-import { title } from "process"
 import z from "zod"
 
+export const Signup = z.object({
+  email : z.string().email(),
+  password : z.string().min(3),
+  name:z.string()
+})
+export type SignupType = z.infer<typeof Signup>
 export const Signin = z.object({
   email : z.string().email(),
   password : z.string().min(3)

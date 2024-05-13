@@ -3,7 +3,7 @@ import { Hono } from 'hono'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { decode, sign, verify } from 'hono/jwt'
-import { Signin,SigninType,Post,PostType,PutType} from '../zod/validateInput'
+import {SignupType,Signin,SigninType,Post,PostType,PutType, Signup} from '../zod/validateInput'
 
 export const userRoutes = new Hono<{
   Bindings: {
@@ -16,8 +16,8 @@ userRoutes.post('/user/signup', async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate())
 
-    const body =<SigninType> await c.req.json();
-    const {success} = Signin.safeParse(body)
+    const body =<SignupType> await c.req.json();
+    const {success} = Signup.safeParse(body)
     if(!success){
       return c.json({msg:"invalid schema"})
     }
