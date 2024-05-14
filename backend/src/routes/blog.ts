@@ -14,7 +14,11 @@ export const blogRoutes = new Hono<{
     id :string
   }
 }>()
+
 blogRoutes.all("/*",async (c,next)=>{
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate())
   const bearerToken = c.req.header('authorization')
   const token = bearerToken?.split(" ")[1]
   if(!token){
@@ -24,11 +28,24 @@ blogRoutes.all("/*",async (c,next)=>{
     if(!verifyResponse){
       return c.text("access denied")
     }
-    c.set('id',verifyResponse.id)
+
+    const user = await prisma.user.findUnique({
+      where:{
+        id : verifyResponse.id,
+      },
+      select:{
+        id:true
+      }
+    })
+    if(!user){
+      return c.text("user doesn't exist")
+    }
+    c.set('id',user.id)
     await next()
 })
 
 blogRoutes.post('/',async (c) => {
+
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate())
@@ -40,21 +57,10 @@ blogRoutes.post('/',async (c) => {
       msg: "error schema"
     })
   }
-  const id = c.get('id')
-    const user = await prisma.user.findUnique({
-     where:{
-       id : id,
-     },
-     select:{
-       id:true
-      }
-    })
-    if(!user){
-      return c.text("user doesn't exist")
-    }
+  const id = c.get('id')  
     const response = await prisma.post.create({
       data:{
-        authorId:user.id,
+        authorId:id,
         title: body.title,
         context: body.context
       },
@@ -75,20 +81,10 @@ blogRoutes.put('/',async (c) => {
   
   const id = c.get('id')
 
-    const user = await prisma.user.findUnique({
-     where:{
-       id :id,
-     },
-     select:{
-       id:true
-      }
-    })
-    if(!user){
-      return c.text("user doesn't exist")
-    }
     const response = await prisma.post.update({
       where:{
         id:body.id,
+        authorId:id,
       },
       data:{
         title:body.title,
@@ -117,9 +113,11 @@ blogRoutes.get('/bulk',async (c) => {
 })
 
 blogRoutes.get('/:id',async (c) => {
+
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate())
+
   const id = c.req.param('id')
   const response = await prisma.post.findUnique({
     where:{
