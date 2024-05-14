@@ -3,7 +3,7 @@ import { Hono } from 'hono'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { decode, sign, verify } from 'hono/jwt'
-import {SignupType,Signin,SigninType, Signup} from '../zod/validateInput'
+import {SignupType,Signin,SigninType, Signup} from "@rohitnpmdata/common-data-app"
 
 export const userRoutes = new Hono<{
   Bindings: {
