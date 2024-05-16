@@ -8,10 +8,10 @@ function Signup() {
   return (
     <>
       <div className="flex justify-between items-center h-screen bg-grey-500">
-        <div className="w-1/2 border-2 h-screen flex justify-center items-center bg-[#fefffe]">
+        <div className="w-1/2 h-screen flex justify-center items-center bg-[#fefffe]">
           <div>
             <Heading headline="Create an account" />
-            <SubHeading subheading="Already have an account?" link={"Login"} />
+            <SubHeading subheading="Already have an account?" link={"Signin"} />
           <div className={" flex justify-center"}>
             <div>
             <InputData placeholder="Enter Your user name" name={"Username"} />
@@ -23,7 +23,7 @@ function Signup() {
           </div>
          </div>
         <div className="w-1/2 flex justify-center bg-[#f2f4f7] h-screen items-center">
-          <div className=" border w-9/12">
+          <div className="w-9/12">
             <LoginReview data={"The customer service I received was exceptional. The support team went above and beyond to address my concerns"} name={"Jules winnfield"} position={"CEO,Acme inc"} />
           </div>
         </div>
