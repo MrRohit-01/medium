@@ -5,10 +5,10 @@ interface reviewData{
 }
 function LoginReview({data,name,position}:reviewData){
 return (
-  <div>
-    <h1>{data}</h1>
-    <p>{name}</p>
-    <p>{position}</p>
+  <div className="">
+    <h1 className="text-4xl font-bold text-wrap">"{data}"</h1>
+    <p className="text-xl font-bold pt-3">{name}</p>
+    <p className="text-md">{position}</p>
   </div>
 )
 }
