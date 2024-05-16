@@ -5,9 +5,10 @@ interface SubHeading {
 }
 function SubHeading({subheading,link}:SubHeading){  
   return (
-    <>
-    <h1 className="text-4xl font-bold text-center">{subheading}{link}</h1>
-    </>
+    <div className={"flex gap-1 justify-center text-md text-center mt-2"}>
+    <p className="">{subheading}</p>
+    <Link to={`/${link}`} className=" underline" >{link}</Link>
+    </div>
   )
 }
 export default SubHeading;
