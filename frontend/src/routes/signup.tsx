@@ -1,10 +1,14 @@
 import InputData from "../components/input";
-import ButtonData from "../components/button";
+// import ButtonData from "../components/button";
 import Heading from "../components/heading";
 import SubHeading from "../components/subheadling";
 import LoginReview from "../components/login-review";
+import { useState } from "react";
 
 function Signup() {
+  const [,setTitle] = useState("")
+  const [,setDescription] = useState("")
+  const [,setPassword] = useState("")
   return (
     <>
       <div className="flex justify-between items-center h-screen bg-grey-500">
@@ -14,19 +18,16 @@ function Signup() {
             <SubHeading subheading="Already have an account?" link={"Signin"} />
           <div className={" flex justify-center"}>
             <div>
-            <InputData placeholder="Enter Your user name" name={"Username"} />
-            <InputData placeholder="example@gmail.com" name={"Email"} />
-            <InputData placeholder="******" name={"Password"} />
-            <ButtonData button={"Sign up"} />
+            <InputData placeholder="Enter Your user name" name={"Username"} onchange={setTitle} />
+            <InputData placeholder="example@gmail.com" name={"Email"} onchange={setDescription}/>
+            <InputData placeholder="******" name={"Password"} onchange={setPassword} />
+            {/* <ButtonData  button={"Sign up"} /> */}
           </div>
           </div>
-          </div>
-         </div>
-        <div className="w-1/2 flex justify-center bg-[#f2f4f7] h-screen items-center">
-          <div className="w-9/12">
-            <LoginReview data={"The customer service I received was exceptional. The support team went above and beyond to address my concerns"} name={"Jules winnfield"} position={"CEO,Acme inc"} />
-          </div>
+        <LoginReview/>
         </div>
+         </div>
+        
       </div>
     </>
   )
