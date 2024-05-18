@@ -3,6 +3,7 @@ import ButtonData from "../components/button";
 import Heading from "../components/heading";
 import SubHeading from "../components/subheadling";
 import LoginReview from "../components/login-review";
+import { useState } from "react";
 
 function Signin() {
   return (
@@ -14,21 +15,29 @@ function Signin() {
             <SubHeading subheading="Already have an account?" link={"Signup"} />
           <div className={" flex justify-center"}>
             <div>
-            <InputData placeholder="example@gmail.com" name={"Email"} />
-            <InputData placeholder="******" name={"Password"} />
-            <ButtonData button={"Sign in"} />
+            <InputFeild/>
           </div>
           </div>
           </div>
          </div>
         <div className="w-1/2 flex justify-center bg-[#f2f4f7] h-screen items-center">
           <div className="w-9/12">
-            <LoginReview data={"The customer service I received was exceptional. The support team went above and beyond to address my concerns"} name={"Jules winnfield"} position={"CEO,Acme inc"} />
+            <LoginReview />
           </div>
         </div>
       </div>
     </>
   )
+}
+function InputFeild(){
+  const [email,setEmail] = useState("")
+  const [password,setPassword] = useState("")
+
+  return(<>
+            <InputData onchange={setEmail} placeholder="example@gmail.com" name={"Email"} />
+            <InputData onchange={setPassword} placeholder="******" name={"Password"} />
+            <ButtonData email={email} password={password} button={"Sign in"} />
+  </>)
 }
 
 export default Signin;

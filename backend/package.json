@@ -7,6 +7,8 @@
     "@prisma/client": "^5.13.0",
     "@prisma/extension-accelerate": "^1.0.0",
     "@rohitnpmdata/common-data-app": "^1.0.3",
+    "@types/cors": "^2.8.17",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "hono": "^4.3.5",
     "prisma": "^5.13.0",
