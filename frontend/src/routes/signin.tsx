@@ -34,8 +34,8 @@ function InputFeild(){
   const [password,setPassword] = useState("")
 
   return(<>
-            <InputData onchange={setEmail} placeholder="example@gmail.com" name={"Email"} />
-            <InputData onchange={setPassword} placeholder="******" name={"Password"} />
+            <InputData onchange={setEmail} placeholder="example@gmail.com" type="text" name={"Email"} />
+            <InputData onchange={setPassword} placeholder="******" type={"password"}name={"Password"} />
             <ButtonData email={email} password={password} button={"Sign in"} mode={"signin"}  />
   </>)
 }

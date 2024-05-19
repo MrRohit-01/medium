@@ -1,17 +1,19 @@
 import axios from 'axios';
+import {useNavigate } from 'react-router-dom';
 
 interface Inputbuttonprops {
   button: string
   email: string
   password: string
-  username?: string
+  name?: string
   mode: "signup" | "signin"
 }
-function ButtonData({ button, email, password, username, mode }: Inputbuttonprops) {
+function ButtonData({ button, email, password, name, mode }: Inputbuttonprops) {
+  const navigate = useNavigate(); 
   const dataFetch = async () => {
-    const payload = username ? {
+    const payload = name ? {
       email: email,
-      name: username,
+      name: name,
       password: password
     } : {
       email: email,
@@ -20,6 +22,12 @@ function ButtonData({ button, email, password, username, mode }: Inputbuttonprop
       try {
         const data = await axios.post("https://backend.rohitkumarbarada.workers.dev/api/v1/user/"+mode, payload);
         localStorage.setItem("token", data.data.jwt)
+        navigate("/blogs")
+
+
+
+
+
 
       } catch (error) {
         console.error(`${mode.charAt(0) + mode.slice(1)} failed:`, error);
