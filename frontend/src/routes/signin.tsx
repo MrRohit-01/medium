@@ -4,6 +4,7 @@ import Heading from "../components/heading";
 import SubHeading from "../components/subheadling";
 import LoginReview from "../components/login-review";
 import { useState } from "react";
+import { SigninType } from "@rohitnpmdata/common-data-app";
 
 function Signin() {
   return (
@@ -30,13 +31,24 @@ function Signin() {
   )
 }
 function InputFeild(){
-  const [email,setEmail] = useState("")
-  const [password,setPassword] = useState("")
-
+  const [inputprops,setinputprops]=useState<SigninType>({
+    email:"",
+    password:""
+  })
+console.log(inputprops)
   return(<>
-            <InputData onchange={setEmail} placeholder="example@gmail.com" type="text" name={"Email"} />
-            <InputData onchange={setPassword} placeholder="******" type={"password"}name={"Password"} />
-            <ButtonData email={email} password={password} button={"Sign in"} mode={"signin"}  />
+            <InputData onchange={(e)=>{
+              setinputprops({
+                ...inputprops,
+                email:e.target.value
+            })
+            }} placeholder="example@gmail.com" type="text"label={"Email"} />
+            <InputData onchange={(e)=>{
+              setinputprops({
+                ...inputprops,
+                password:e.target.value
+            })}} placeholder="******" type={"password"} label={"Password"} />
+            <ButtonData email={inputprops.email} password={inputprops.password} button={"Sign in"} mode={"signin"}  />
   </>)
 }
 

@@ -21,13 +21,11 @@ function ButtonData({ button, email, password, name, mode }: Inputbuttonprops) {
     }
       try {
         const data = await axios.post("https://backend.rohitkumarbarada.workers.dev/api/v1/user/"+mode, payload);
+        if(!data.data.jwt){
+          return alert(data.data.msg)
+        }
         localStorage.setItem("token", data.data.jwt)
         navigate("/blogs")
-
-
-
-
-
 
       } catch (error) {
         console.error(`${mode.charAt(0) + mode.slice(1)} failed:`, error);
