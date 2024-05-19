@@ -43,7 +43,7 @@ function InputFeild(){
   <InputData onchange={setUsername} placeholder="example@gmail.com" name={"Username"} />
             <InputData onchange={setEmail} placeholder="example@gmail.com" name={"Email"} />
             <InputData onchange={setPassword} placeholder="******" name={"Password"} />
-            <ButtonData username={username} email={email} password={password} button={"Sign up"} />
+            <ButtonData username={username} email={email} password={password} button={"Sign up"} mode={"signup"}/>
   </>)
 }
 export default Signup;
