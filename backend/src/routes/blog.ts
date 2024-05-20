@@ -105,11 +105,18 @@ blogRoutes.get('/bulk',async (c) => {
   }).$extends(withAccelerate())
   const response = await prisma.post.findMany({
     select:{
+      id:true,
       title:true,
-      context:true
+      context:true,
+      author:{
+        select:{
+          name:true
+        }
+      }
+
     }
   })
-  return c.json({response})
+  return c.json(response)
 })
 
 blogRoutes.get('/:id',async (c) => {
@@ -119,15 +126,20 @@ blogRoutes.get('/:id',async (c) => {
   }).$extends(withAccelerate())
 
   const id = c.req.param('id')
-  const response = await prisma.post.findUnique({
+  const responseData = await prisma.post.findUnique({
     where:{
       id:id,
     },
     select:{
       title:true,
-      context:true
+      context:true,
+      author:{
+        select:{
+          name:true
+        }
+      }
     }
   })
-  return c.json({response})
+  return c.json(responseData)
 })
 
