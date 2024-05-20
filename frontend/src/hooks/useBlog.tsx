@@ -1,37 +1,45 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+interface BlogType {
+  author: string
+  title: string
+  description: string
+  id:string
+}
 
-export interface BlogType {
-  id: string,
-  title: string,
-  context: string,
-  author: {
-      name: string
-}
-}
-export const Useblog = () => {
-  const [loading, setLoading] = useState(true)
-  const [blogs, setBlogs] = useState<BlogType[]>([])
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("https://backend.rohitkumarbarada.workers.dev/api/v1/blog/bulk", {
-          headers: {
-            Authorization:"Bearer "+localStorage.getItem("token")
-          }
-        })
-        setBlogs(response.data)
-      } catch (e) {
-        console.log("data didn't fetch")
-      } finally {
-        setLoading(false)
+const useBlog=()=>{
+  const params = useParams();
+  const [loading,setLoading] = useState(true)
+  const [blog,setBlog] = useState<BlogType>()
+  useEffect(()=>{
+    const fetchData = async()=>{
+      try{
+      const data = await axios.get("https://backend.rohitkumarbarada.workers.dev/api/v1/blog/"+params,{
+        headers:{
+          Authorization:"Bearer "+localStorage.getItem("token")
+        }
+      })
+      const response :BlogType = {
+        author:data.data.responseData.author,
+        title:data.data.responseData.title,
+      description:data.data.responseData.context,
+      id:data.data.responseData.id,
       }
+      setBlog(response)
+    }catch(e){
+      console.log("data not fetch")
+    }finally{
+      setLoading(false)
+    }
+    
     }
     fetchData()
-  },[])
-  return {
+  },[params])
+  return{
     loading,
-    blogs
+    blog
   }
-
 }
+
+export default useBlog;

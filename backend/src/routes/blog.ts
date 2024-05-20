@@ -131,6 +131,7 @@ blogRoutes.get('/:id',async (c) => {
       id:id,
     },
     select:{
+      id:true,
       title:true,
       context:true,
       author:{

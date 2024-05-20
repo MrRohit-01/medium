@@ -9,7 +9,7 @@ import { SignupType } from "@rohitnpmdata/common-data-app";
 function Signup() {
   return (
     <>
-    
+
       <div className="flex justify-between items-center h-screen bg-grey-500">
         <div className="w-1/2 h-screen flex justify-center items-center bg-[#fefffe]">
           <div>
@@ -38,6 +38,7 @@ function InputField() {
     email: "",
     password: ""
   });
+
  console.log(inputProps)
   return (
     <>
