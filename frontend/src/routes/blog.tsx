@@ -1,20 +1,34 @@
 import useBlog from "../hooks/useBlog";
 import {BlogCard} from "../components/blogCard";
+import { Skeleton } from "../components/skeleton";
 
 const Blog = () => {
-  const { loading, blog } = useBlog(); // Destructure the returned object correctly
+  const { loading, data} = useBlog(); 
 
   if (loading) {
-    return <p>loading...</p>;
+    return (
+      <>
+      <Skeleton/>
+      </>
+    );
+  }
+  if (!data) {
+
+    return (
+      <div>
+        
+        Blog not found
+      </div>
+    );
   }
 
   return (
     <>
       <BlogCard 
-        id={blog?.id ||" "}
-        author={blog?.author|| "Anonymous"}
-        title={blog?.title || " "}
-        description={blog?.description|| " "}
+        id={data?.id ?? " "}
+        author={ data?.author.name ?? "Anonymous"}
+        title={data?.title ?? "No title"}
+        description={data?.context ?? "No description"}
       />
     </>
   );

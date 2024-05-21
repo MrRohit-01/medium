@@ -1,45 +1,52 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-interface BlogType {
-  author: string
-  title: string
-  description: string
-  id:string
+import { useRecoilValue } from 'recoil';
+import { blogByIdSelector } from '../store/atoms';
+import axios from 'axios';
+
+export interface BlogType {
+  id: string;
+  title: string;
+  context: string;
+  author: {
+    name: string;
+  };
 }
 
-const useBlog=()=>{
-  const params = useParams();
-  const [loading,setLoading] = useState(true)
-  const [blog,setBlog] = useState<BlogType>()
-  useEffect(()=>{
-    const fetchData = async()=>{
-      try{
-      const data = await axios.get("https://backend.rohitkumarbarada.workers.dev/api/v1/blog/"+params,{
-        headers:{
-          Authorization:"Bearer "+localStorage.getItem("token")
-        }
-      })
-      const response :BlogType = {
-        author:data.data.responseData.author,
-        title:data.data.responseData.title,
-      description:data.data.responseData.context,
-      id:data.data.responseData.id,
+const useBlog = () => {
+  const { id } = useParams<{ id: string }>();
+  const [loading, setLoading] = useState(true);
+  const blog = useRecoilValue<BlogType | null>((id ? blogByIdSelector(id) : blogByIdSelector('')));
+  const [renderData, setRenderData] = useState<BlogType | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!blog) {
+      
+      try {
+        const response = await axios.get(`https://backend.rohitkumarbarada.workers.dev/api/v1/blog/${id}`, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+          }
+        });
+        setRenderData(response.data);
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false);
+      } }
+      else{
+        setLoading(false);
       }
-      setBlog(response)
-    }catch(e){
-      console.log("data not fetch")
-    }finally{
-      setLoading(false)
     }
-    
-    }
-    fetchData()
-  },[params])
-  return{
+
+    fetchData();
+  }, [blog, id]);
+
+  return {
     loading,
-    blog
-  }
-}
+    data : blog || renderData
+  };
+};
 
 export default useBlog;

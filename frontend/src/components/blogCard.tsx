@@ -3,7 +3,7 @@ import { Avatar } from "./Avatar"
 import { Link } from "react-router-dom"
 
 interface BlogType {
-  author: string
+  author: string 
   title: string
   description: string
   id:string

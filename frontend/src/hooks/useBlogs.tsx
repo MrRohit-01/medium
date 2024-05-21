@@ -1,5 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { useRecoilState } from "recoil"
+import { blogsState } from "../store/atoms"
 
 export interface BlogType {
   id: string,
@@ -11,9 +13,16 @@ export interface BlogType {
 }
 export const Useblog = () => {
   const [loading, setLoading] = useState(true)
-  const [blogs, setBlogs] = useState<BlogType[]>([])
+  const [blogs, setBlogs] = useRecoilState<BlogType[]>(blogsState)
   useEffect(() => {
+
+    
     const fetchData = async () => {
+      if (blogs.length > 0) {
+   
+        setLoading(false);
+        return;
+      }
       try {
         const response = await axios.get("https://backend.rohitkumarbarada.workers.dev/api/v1/blog/bulk", {
           headers: {
@@ -23,12 +32,13 @@ export const Useblog = () => {
         setBlogs(response.data)
       } catch (e) {
         console.log("data didn't fetch")
+        return []
       } finally {
         setLoading(false)
       }
     }
     fetchData()
-  },[])
+  },[blogs.length, setBlogs])
   return {
     loading,
     blogs
