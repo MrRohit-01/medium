@@ -1,6 +1,6 @@
 import useBlog from "../hooks/useBlog";
 import {BlogCard} from "../components/blogCard";
-import { Skeleton } from "../components/skeleton";
+import { SingleBlog } from "../components/SingleBlog";
 
 const Blog = () => {
   const { loading, data} = useBlog(); 
@@ -8,7 +8,6 @@ const Blog = () => {
   if (loading) {
     return (
       <>
-      <Skeleton/>
       </>
     );
   }
@@ -24,12 +23,13 @@ const Blog = () => {
 
   return (
     <>
-      <BlogCard 
+     <div className="md:hidden"> <BlogCard 
         id={data?.id ?? " "}
         author={ data?.author.name ?? "Anonymous"}
         title={data?.title ?? "No title"}
         description={data?.context ?? "No description"}
-      />
+        /></div>
+        <div className="max-md:hidden"><SingleBlog title={data?.title ?? "No title"} description={data?.context ?? "No description"} author={ data?.author.name ?? "Anonymous"} date={"Dec 3,2023"} bio={"this is a demo page and this is demo bio"} /></div>
     </>
   );
 }
