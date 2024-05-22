@@ -6,6 +6,7 @@ import Signup from "./routes/signup";
 import Blog from "./routes/blog";
 import {RecoilRoot} from 'recoil';
 import './App.css';
+import { CreatePost } from "./routes/create";
 function App() {
   return (
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blog/:id" element={<Blog />} />
+          <Route path="/blog/create" element={<CreatePost />} />
 
       </Routes>
         </RecoilRoot>

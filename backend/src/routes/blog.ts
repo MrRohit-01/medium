@@ -146,14 +146,3 @@ blogRoutes.get('/:id',async (c) => {
   return c.json(responseData)
 })
 
-// function async(arg0: (c: any, next: any) => void): import("hono").MiddlewareHandler<{
-//   Bindings: {
-//     DATABASE_URL: string
-//     JWT_SECRET: string
-//   }; Variables: {
-//     id: string
-//   }
-// }, "/me/*", {}> {
-//   throw new Error('Function not implemented.')
-// }
-
