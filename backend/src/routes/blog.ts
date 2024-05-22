@@ -5,6 +5,7 @@ import { withAccelerate } from '@prisma/extension-accelerate'
 import { verify } from 'hono/jwt'
 import {Post,PostType,PutType} from '../zod/validateInput'
 
+
 export const blogRoutes = new Hono<{
   Bindings: {
     DATABASE_URL:string,
@@ -98,6 +99,7 @@ blogRoutes.put('/',async (c) => {
  return c.json({response})
 })
 
+
 blogRoutes.get('/bulk',async (c) => {
 
   const prisma = new PrismaClient({
@@ -143,4 +145,15 @@ blogRoutes.get('/:id',async (c) => {
   })
   return c.json(responseData)
 })
+
+// function async(arg0: (c: any, next: any) => void): import("hono").MiddlewareHandler<{
+//   Bindings: {
+//     DATABASE_URL: string
+//     JWT_SECRET: string
+//   }; Variables: {
+//     id: string
+//   }
+// }, "/me/*", {}> {
+//   throw new Error('Function not implemented.')
+// }
 

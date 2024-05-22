@@ -38,19 +38,19 @@ function InputField() {
     email: "",
     password: ""
   });
-
- console.log(inputProps)
   return (
     <>
-      <InputData onchange={(e)=>setInputProps({
-        ...inputProps,
-        name: e.target.value
-      })} placeholder="Enter your name" type="text" label="name" />
+      <InputData onchange={(e)=>{
+        setInputProps({
+          ...inputProps,
+          name:e.target.value
+        })}} placeholder="Enter your name" type="text" label="name" />
       <InputData onchange={(e)=>{
         setInputProps({
           ...inputProps,
           email:e.target.value
         })
+        console.log(e.target.value)
       }} placeholder="example@gmail.com" type="text" label="email" />
       <InputData onchange={(e)=>{
         setInputProps({

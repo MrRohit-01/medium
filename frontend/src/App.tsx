@@ -16,6 +16,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blog/:id" element={<Blog />} />
+
       </Routes>
         </RecoilRoot>
     </BrowserRouter>

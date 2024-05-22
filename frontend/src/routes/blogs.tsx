@@ -8,12 +8,9 @@ function Blogs(){
   if (loading) {
     return <Skeleton/>
   }
-  if(blogs){
-    console.log(blogs)
-  }
   return (
     <>
-      <AppBar author={"Rohit"} />
+      <AppBar />
       <div className="flex flex-col items-center">
         <div>
         {blogs && blogs.map((blog) => {

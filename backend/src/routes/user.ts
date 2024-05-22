@@ -9,8 +9,24 @@ export const userRoutes = new Hono<{
   Bindings: {
     DATABASE_URL:string,
     JWT_SECRET: string,
+  },
+  Variables:{
+    userId:string
   }
 }>()
+
+userRoutes.use("/me/*",async(c,next)=>{
+  const tokenWithPrefix = c.req.header("authorization")
+  const token = tokenWithPrefix?.split(" ")[1]
+
+  if(!tokenWithPrefix || !token){
+    return c.json({msg:"error on token"})
+  }
+  const response = await verify(token,c.env.JWT_SECRET)
+  c.set("userId",response.id)
+  await next()
+})
+
 userRoutes.post('/signup', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -24,6 +40,7 @@ userRoutes.post('/signup', async (c) => {
     const response = await prisma.user.create({
       data: {
         email: body.email,
+        name:body.name,
         password: body.password,
       }
     })
@@ -57,3 +74,32 @@ userRoutes.post('/signin', async (c) => {
 })
 
 
+userRoutes.get("/me", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    const userId = c.get("userId");
+    const responseData = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
+
+    if (!responseData) {
+      return c.json({ msg: "User not found" }, 404);
+    }
+
+    return c.json(responseData);
+  } catch (error) {
+    return c.json({ msg: "Failed to fetch user data" }, 500);
+  } finally {
+    await prisma.$disconnect();
+  }
+});
