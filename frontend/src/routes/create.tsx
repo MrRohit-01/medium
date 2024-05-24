@@ -14,19 +14,19 @@ export const CreatePost = () => {
   const handleSubmit = () => {
     const fetch = async () => {
       const response = await axios.post("https://backend.rohitkumarbarada.workers.dev/api/v1/blog", {
-        title: title,
+        title,
         context: content
       }
         , {
           headers: {
-            authorization: "Bearer " + localStorage.getItem("token")
+            authorization: `Bearer ${localStorage.getItem("token")}`
           }
 
         })
-        
-        const id = await response.data.response.id
-        navigate(`/blog/${id}`)
-      }
+
+      const id = await response.data.response.id
+      navigate(`/blog/${id}`)
+    }
     fetch()
   };
 
