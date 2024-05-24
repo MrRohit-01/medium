@@ -64,7 +64,7 @@ export const CreatePost = () => {
               ref={titleRef}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="px-3 py-2 rounded-md focus:outline-none text-5xl font-medium h-auto min-h-[100px] max-h-[100px] resize-none"
+              className="px-3 py-2 rounded-md w-full focus:outline-none text-xl sm:text-4xl font-medium h-auto min-h-[100px] max-h-[1000px] resize-none"
               placeholder="Title"
             />
           </div>
@@ -73,7 +73,7 @@ export const CreatePost = () => {
               ref={contentRef}
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="px-3 py-2 rounded-md focus:outline-none text-2xl h-auto min-h-[200px] max-h-[2000px] resize-none"
+              className="px-3 py-2 rounded-md w-full focus:outline-none text-lg sm:text-2xl h-auto min-h-[200px] max-h-[2000px] resize-none"
               placeholder="Write your Content..."
             />
           </div>
