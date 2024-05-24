@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React from "react";
 import Blogs from "./routes/blogs";
 import Signin from "./routes/signin"
 import Signup from "./routes/signup";
@@ -9,7 +8,6 @@ import './App.css';
 import { CreatePost } from "./routes/create";
 function App() {
   return (
-
     <BrowserRouter>
         <RecoilRoot>
       <Routes>
