@@ -30,6 +30,7 @@ const BlogContent = ({ data }: BlogData) => (
         author={data?.author.name ?? "Anonymous"}
         title={data?.title ?? "No title"}
         description={data?.context ?? "No description"}
+        full
       />
     </div>
     <div className="max-md:hidden mt-20">
