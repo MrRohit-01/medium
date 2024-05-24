@@ -29,7 +29,7 @@ export const AppBar = () => {
         localStorage.setItem("userId", response.data.id);
         setUser(response.data);
       } catch (e) {
-        navigate("/signup");
+        navigate("/");
       }
     };
 
