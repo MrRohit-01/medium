@@ -10,11 +10,11 @@ function Signup() {
   return (
     <>
 
-      <div className="flex justify-between items-center h-screen bg-grey-500">
-        <div className="w-1/2 h-screen flex justify-center items-center bg-[#fefffe]">
+      <div className="flex max-md:flex-col md:justify-between items-center h-screen bg-grey-500">
+        <div className="mx-md: w-full md:w-1/2 h-screen flex justify-center items-center bg-[#fefffe]">
           <div>
             <Heading headline="Create an account" />
-            <SubHeading subheading="Already have an account?" link={"Signin"} />
+            <SubHeading subheading="Already have an account?" link={"Signin"} linkPath="signin"/>
             <div className="flex justify-center">
               <div>
                 <InputField />
@@ -22,7 +22,7 @@ function Signup() {
             </div>
           </div>
         </div>
-        <div className="w-1/2 flex justify-center bg-[#f2f4f7] h-screen items-center">
+        <div className="w-1/2 max-md:hidden flex justify-center bg-[#f2f4f7] h-screen items-center">
           <div className="w-9/12">
             <LoginReview />
           </div>

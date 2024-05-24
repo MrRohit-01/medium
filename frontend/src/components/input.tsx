@@ -19,7 +19,7 @@ interface InputDataProps {
             id="inputid"
             placeholder={placeholder || "enter data"}
             onChange={handleInputChange} 
-            className={"max-sm:w-4/5 border-2 outline-none mt-2 py-2 px-3 font-normal rounded-md w-96"}
+            className={"max-sm:w-full border-2 outline-none mt-2 py-2 px-3 font-normal rounded-md w-96"}
             type={type || "text"}
           />  
         </div>

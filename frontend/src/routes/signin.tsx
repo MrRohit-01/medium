@@ -10,10 +10,10 @@ function Signin() {
   return (
     <>
       <div className="flex justify-between items-center h-screen bg-grey-500">
-        <div className="mx-md: w-full md:w-1/2 h-screen flex justify-center items-center bg-[#fefffe]">
+        <div className="w-full md:w-1/2 h-screen flex justify-center items-center bg-[#fefffe]">
           <div>
             <Heading headline="Create an account" />
-            <SubHeading subheading="Already have an account?" link={"Signup"} />
+            <SubHeading subheading="Already have an account?" linkPath={""} link="Signup" />
           <div className={" flex justify-center"}>
             <div>
             <InputFeild/>
