@@ -16,7 +16,7 @@ function Signup() {
             <Heading headline="Create an account" />
             <SubHeading subheading="Already have an account?" link={"Signin"} linkPath="signin"/>
             <div className="flex justify-center">
-              <div>
+              <div className='w-full'>
                 <InputField />
               </div>
             </div>

@@ -13,7 +13,7 @@ interface InputDataProps {
   
     return (
       <div>
-        <div className={"p-4 pb-0 max-md:4/5"}>
+        <div className={"py-4 pb-0 max-md:4/5"}>
           <label htmlFor='inputid' className={"font-medium"}>{label}</label><br/>
           <input
             id="inputid"
