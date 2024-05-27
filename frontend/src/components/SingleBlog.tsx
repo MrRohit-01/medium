@@ -18,7 +18,7 @@ export const SingleBlog = ({ title, description, author, date, bio }: SingleBlog
           <div className="pb-2">
             <p className=" inline-block px-2 rounded-xl text-sm w-2/12 h-5 "></p></div>
           <hr className="mb-3" />
-        </div>
+  k      </div>
         <div className="">
         <div>Author</div>
         <div  className="text-2xl
