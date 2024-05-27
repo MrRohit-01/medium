@@ -5,8 +5,9 @@ interface InputDataProps {
   placeholder:string
   onchange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: string
+  viewPassword?: boolean
 }
-  function InputData({ label, placeholder, onchange, type }: InputDataProps) {
+  function InputData({ label, placeholder, onchange,type }: Readonly<InputDataProps>) {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       onchange(e);
     };
@@ -20,7 +21,7 @@ interface InputDataProps {
             placeholder={placeholder || "enter data"}
             onChange={handleInputChange} 
             className={"max-sm:w-full border-2 outline-none mt-2 py-2 px-3 font-normal rounded-md w-96"}
-            type={type || "text"}
+            type={type ?? "text"}
           />  
         </div>
       </div>

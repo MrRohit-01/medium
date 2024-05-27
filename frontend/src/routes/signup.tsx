@@ -8,7 +8,7 @@ import { SignupType } from "@rohitnpmdata/common-data-app";
 
 function Signup() {
   return (
-    <>
+  
 
       <div className="flex max-md:flex-col md:justify-between items-center h-screen bg-grey-500">
         <div className="mx-md: w-full md:w-1/2 h-screen flex justify-center items-center bg-[#fefffe]">
@@ -28,7 +28,7 @@ function Signup() {
           </div>
         </div>
       </div>
-    </>
+
   );
 }
 
