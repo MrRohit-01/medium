@@ -34,7 +34,7 @@ function ButtonData({ button, email, password, name, mode }: Inputbuttonprops) {
   };
 
   return (
-    <div className={"p-4 pt-5"}>
+    <div className={"py-4 pt-5"}>
       <button className=" max-sm:w-full w-96 bg-black text-white border rounded-md py-1.5 px-2 text-md font-medium" onClick={dataFetch} >{button}</button>
     </div>
   );

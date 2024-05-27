@@ -15,14 +15,14 @@ function Signup() {
           <div>
             <Heading headline="Create an account" />
             <SubHeading subheading="Already have an account?" link={"Signin"} linkPath="signin"/>
-            <div className="flex justify-center">
-              <div className='w-full'>
+            <div className=" flex justify-center">
+            <div className="w-full">
                 <InputField />
-              </div>
+                </div>
             </div>
           </div>
         </div>
-        <div className="w-1/2 max-md:hidden flex justify-center bg-[#f2f4f7] h-screen items-center">
+        <div className="md:w-1/2 max-md:hidden flex justify-center bg-[#f2f4f7] h-screen items-center">
           <div className="w-9/12">
             <LoginReview />
           </div>
