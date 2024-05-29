@@ -9,10 +9,10 @@ interface SingleBlog {
 }
 export const SingleBlog = ({ title, description, author, date, bio }: SingleBlog) => {
   return (
-    <>
+    <div className="flex justify-center gap-5 flex-wrap">
       <div className=" flex justify-center gap-5 flex-wrap">
         <div className="flex flex-col w-4/12 ">
-          <h1 className="text-5xl font-semibold cursor-pointer">{title}</h1>
+          <h1 className="text-5xl font-semibold cursor-pointer break-words">{title}</h1>
           <h3 className="text-sm mt-2 mb-2 cursor-pointer w-1/2 rounded-xl h-6">Published on {date}</h3>
           <h3 className="text-xl mb-2 mt-1 cursor-pointer rounded-xl">{description}</h3>
           <div className="pb-2">
@@ -26,6 +26,7 @@ export const SingleBlog = ({ title, description, author, date, bio }: SingleBlog
         <div className="text-md ">{bio}</div>
       </div>
       </div>
-    </>
+      </div>
+
   )
 }

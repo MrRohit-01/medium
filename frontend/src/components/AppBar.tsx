@@ -47,7 +47,7 @@ export const AppBar = () => {
   }, [navigate]);
 
   return (
-    <div className="py-1 w-full flex justify-around border">
+    <div className="py-1 w-full flex  justify-between sm:justify-around max-md:px-5 border">
       <Link to={"/blogs"}>
         <div className="mt-2 font-medium text-xl cursor-pointer">Medium</div>
       </Link>

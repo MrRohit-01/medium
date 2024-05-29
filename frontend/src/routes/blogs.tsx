@@ -5,13 +5,13 @@ import { Useblog } from "../hooks/useBlogs";
 
 function Blogs(){
   const { loading, blogs } = Useblog();
-  if (!loading) {
+  if (loading) {
     return <Skeleton/>
   }
   return (
     <>
       <AppBar />
-      {/* <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center">
         <div>
         {blogs && blogs.map((blog) => {
           return <BlogCard id={blog.id}
@@ -23,7 +23,7 @@ function Blogs(){
           />
         })}
         </div>
-      </div> */}
+      </div>
     </>
   );
 }
