@@ -2,7 +2,7 @@ export const Skeleton = ({ size }: { size?: string }) => {
 
   return (
     <div className="flex justify-center mt-10">
-    <div className="flex flex-col px-1 py-3 max-w-xl justify-center w-screen h-full ">
+    <div className="flex flex-col px-1 max-sm:px-4 py-3 max-w-xl justify-center w-screen h-full ">
       <div className="flex gap-2 h-full pb-3">
         <p className={`flex items-center justify-center  mt-0.5 cursor-pointer rounded-full bg-slate-200 text-white ${size ? "w-10 h-10" : "w-7 h-7"}`}></p>
         <p className="mt-1 cursor-pointer w-2/12 bg-slate-200 rounded-xl h-6"></p>

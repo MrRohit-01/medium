@@ -15,7 +15,7 @@ export const BlogCard = ({ author, title, description, id,full }: BlogType) => {
     setShowDescription(description.split(" ").splice(0, 10).join(" "))
   }, [description])
   return (
-    <>
+  
       <Link to={`/blog/${id}`}>
         <div className="px-4 py-3 w-screen md:max-w-2xl ">
           <div className="flex gap-2 h-full pb-3">
@@ -32,7 +32,6 @@ export const BlogCard = ({ author, title, description, id,full }: BlogType) => {
           <hr />
         </div>
       </Link>
-    </>
   )
 }
 interface WordCountProps {
