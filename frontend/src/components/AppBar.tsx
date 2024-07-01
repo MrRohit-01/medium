@@ -28,6 +28,7 @@ export const AppBar = () => {
         localStorage.setItem("userName", response.data.name);
         localStorage.setItem("userId", response.data.id);
         setUser(response.data);
+        console.log(response.data)
       } catch (e) {
         navigate("/");
       }
@@ -55,6 +56,7 @@ export const AppBar = () => {
         <Link to={"/blog/create"}>
       <img src="https://img.icons8.com/?size=100&id=izf3IxWTfYti&format=png&color=000000" className="w-8 h-8 mt-1.5 cursor-pointer "/></Link>
       <Avatar size="big" name={user.name} />
+      console.log(user.name)
     </div>
     </div>
   );
