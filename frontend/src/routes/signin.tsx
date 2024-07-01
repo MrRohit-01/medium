@@ -35,8 +35,7 @@ function InputFeild() {
     email: "",
     password: ""
   })
-
-  console.log(inputprops)
+  
   return (<>
     <InputData onchange={(e) => {
       setinputprops({
