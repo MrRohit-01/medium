@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
-import { decode, sign, verify } from 'hono/jwt'
+import {sign, verify } from 'hono/jwt'
 import {SignupType,Signin,SigninType, Signup} from "@rohitnpmdata/common-data-app"
 
 export const userRoutes = new Hono<{
@@ -23,7 +23,7 @@ userRoutes.use("/me/*",async(c,next)=>{
     return c.json({msg:"error on token"})
   }
   const response = await verify(token,c.env.JWT_SECRET)
-  c.set("userId",response.id)
+  c.set("userId", response.id as string);
   await next()
 })
 
@@ -62,11 +62,12 @@ userRoutes.post('/signin', async (c) => {
   }
   const user = await prisma.user.findUnique({
     where: {
-      email: body.email
+      email: body.email,
+      password: body.password
     }
   })
   if (!user) {
-    return c.text('error, user "' + body.email + '" doesn\'t exist,sign up first')
+    return c.json({msg: 'invalid credentials'}, 401);
   }
   const token = await sign({ id:user.id}, c.env.JWT_SECRET)
   return c.json({ jwt: token });

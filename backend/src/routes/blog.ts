@@ -32,7 +32,7 @@ blogRoutes.all("/*",async (c,next)=>{
 
     const user = await prisma.user.findUnique({
       where:{
-        id : verifyResponse.id,
+        id : verifyResponse.id as string,
       },
       select:{
         id:true
@@ -120,7 +120,20 @@ blogRoutes.get('/bulk',async (c) => {
   })
   return c.json(response)
 })
+blogRoutes.get('/delete/:id',async (c) => {
 
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate())
+
+  const id = c.req.param('id')
+  const response = await prisma.post.delete({
+    where:{
+      id:id,
+     authorId:c.get('id')
+    }
+  })
+})
 blogRoutes.get('/:id',async (c) => {
 
   const prisma = new PrismaClient({
