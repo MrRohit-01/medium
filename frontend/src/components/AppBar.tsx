@@ -49,9 +49,21 @@ export const AppBar = () => {
     }
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/signin");
+  const handleLogout = async () => {
+    try {
+      // await axios.post("https://backend.rohitkumarbarada.workers.dev/api/v1/user/logout", {}, {
+      //   headers: {
+      //     Authorization: "Bearer " + localStorage.getItem("token"),
+      //   },
+      // });
+
+      // Clear local storage and navigate to sign-in
+      localStorage.clear();
+      navigate("/signin");
+    } catch (error) {
+      console.error("Failed to logout:", error);
+      alert("Failed to logout. Please try again.");
+    }
   };
 
   return (

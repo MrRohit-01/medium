@@ -200,3 +200,31 @@ userRoutes.put('/me/profile', async (c) => {
     await prisma.$disconnect();
   }
 });
+
+userRoutes.post('/logout', async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
+  }).$extends(withAccelerate());
+
+  try {
+    const userId = c.get("userId");
+
+    if (!userId) {
+      return c.json({ msg: "Authorization failed: Missing or invalid user token." }, 400);
+    }
+
+    // Invalidate all tokens for the user (e.g., by updating a token version or blacklist)
+    await prisma.user.update({
+      where: { id: userId },
+      data: { tokenVersion: { increment: 1 } }, // Example: Increment token version
+    });
+
+    return c.json({ msg: "Logged out successfully" });
+  } catch (error) {
+    console.error("Failed to logout user:", error);
+    return c.json({ msg: "Failed to logout user" }, 500);
+  } finally {
+    await prisma.$disconnect();
+  }
+});

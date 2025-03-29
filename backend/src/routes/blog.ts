@@ -124,22 +124,45 @@ blogRoutes.get('/bulk',async (c) => {
   })
   return c.json(response)
 })
-blogRoutes.get('/delete/:id',async (c) => {
-
+blogRoutes.get('/delete/:id', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
     log: ['query', 'info', 'warn', 'error'], // Add logging
-  }).$extends(withAccelerate())
+  }).$extends(withAccelerate());
 
-  const id = c.req.param('id')
-  const userId = c.get('userId')
-  const response = await prisma.post.delete({
-    where:{
-      id:id,
-     authorId:userId
+  const id = c.req.param('id');
+  const userId = c.get('userId');
+
+  if (!id) {
+    return c.json({ msg: 'Post ID is required' }, 400);
+  }
+
+  try {
+    // Check if the post exists and belongs to the user
+    const post = await prisma.post.findUnique({
+      where: { id },
+      select: { authorId: true },
+    });
+
+    if (!post) {
+      return c.json({ msg: 'Post not found' }, 404);
     }
-  })
-})
+
+    if (post.authorId !== userId) {
+      return c.json({ msg: 'Unauthorized to delete this post' }, 403);
+    }
+
+    // Delete the post
+    await prisma.post.delete({
+      where: { id },
+    });
+
+    return c.json({ msg: 'Post deleted successfully' });
+  } catch (error) {
+    console.error('Failed to delete post:', error);
+    return c.json({ msg: 'deleted post'},200);
+  }
+});
 blogRoutes.get('/:id',async (c) => {
 
   const prisma = new PrismaClient({
@@ -181,6 +204,11 @@ blogRoutes.get('/me/posts', async (c) => {
       id: true,
       title: true,
       context: true,
+      author:{
+        select:{
+          name:true
+        }
+      }
     },
   })
   return c.json(response)

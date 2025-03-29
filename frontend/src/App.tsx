@@ -8,6 +8,7 @@ import Profile from "./routes/profile";
 import Settings from "./routes/settings";
 import "./App.css";
 import { CreatePost } from "./routes/create";
+import MyPosts from "./routes/myPosts"; // Import the new MyPosts component
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/blog/create" element={<CreatePost />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/me/posts" element={<MyPosts />} />
         </Routes>
       </RecoilRoot>
     </BrowserRouter>
