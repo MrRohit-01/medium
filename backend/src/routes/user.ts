@@ -104,3 +104,58 @@ userRoutes.get("/me", async (c) => {
     await prisma.$disconnect();
   }
 });
+
+userRoutes.get('/profile', async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    const userId = c.get("userId");
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, name: true, email: true },
+    });
+
+    if (!user) {
+      return c.json({ msg: "User not found" }, 404);
+    }
+
+    return c.json(user);
+  } catch (error) {
+    return c.json({ msg: "Failed to fetch profile" }, 500);
+  } finally {
+    await prisma.$disconnect();
+  }
+});
+
+userRoutes.put('/profile', async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  try {
+    const userId = c.get("userId");
+    const body = await c.req.json();
+    const updateData: { name?: string; email?: string; password?: string } = {
+      name: body.name,
+      email: body.email,
+    };
+
+    if (body.password) {
+      updateData.password = body.password;
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: updateData,
+      select: { id: true, name: true, email: true },
+    });
+
+    return c.json(updatedUser);
+  } catch (error) {
+    return c.json({ msg: "Failed to update profile" }, 500);
+  } finally {
+    await prisma.$disconnect();
+  }
+});

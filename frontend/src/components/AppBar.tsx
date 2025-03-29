@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Avatar } from "./Avatar";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import randomColor from "./randomColor"; // Import the randomColor function
+import { FaUser, FaCog, FaSignOutAlt } from "react-icons/fa"; // Import icons
 
 interface ResponseData {
   name: string;
@@ -16,6 +17,7 @@ export const AppBar = () => {
     email: "",
     id: "",
   });
+  const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown visibility
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -28,7 +30,7 @@ export const AppBar = () => {
         localStorage.setItem("userName", response.data.name);
         localStorage.setItem("userId", response.data.id);
         setUser(response.data);
-        console.log(response.data)
+        console.log(response.data);
       } catch (e) {
         navigate("/");
       }
@@ -40,23 +42,61 @@ export const AppBar = () => {
       setUser((prevUser) => ({
         ...prevUser,
         name: storedUserName,
-        id:storedUserId
+        id: storedUserId,
       }));
     } else {
       fetchUser();
     }
   }, [navigate]);
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/signin");
+  };
+
   return (
-    <div className="py-1 w-full flex  justify-between sm:justify-around max-md:px-5 border">
+    <div className="py-1 w-full flex justify-between sm:justify-around max-md:px-5 border">
       <Link to={"/blogs"}>
         <div className="mt-2 font-medium text-xl cursor-pointer">Medium</div>
       </Link>
-      <div className="flex gap-3 ">
+      <div className="flex gap-3 relative">
         <Link to={"/blog/create"}>
-      <img src="https://img.icons8.com/?size=100&id=izf3IxWTfYti&format=png&color=000000" className="w-8 h-8 mt-1.5 cursor-pointer "/></Link>
-      <Avatar size="big" name={user.name} />
-    </div>
+          <img
+            src="https://img.icons8.com/?size=100&id=izf3IxWTfYti&format=png&color=000000"
+            className="w-8 h-8 mt-1.5 cursor-pointer"
+          />
+        </Link>
+        <div
+          className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold ${randomColor()} cursor-pointer`}
+          onClick={() => setDropdownOpen(!dropdownOpen)} // Toggle dropdown visibility
+        >
+          {user.name.charAt(0).toUpperCase()}
+        </div>
+        {dropdownOpen && (
+          <div className="absolute right-0 mt-12 bg-white border rounded shadow-lg">
+            <ul className="text-sm">
+              <li
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+                onClick={() => navigate("/profile")}
+              >
+                <FaUser /> Profile
+              </li>
+              <li
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+                onClick={() => navigate("/settings")}
+              >
+                <FaCog /> Settings
+              </li>
+              <li
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+                onClick={handleLogout}
+              >
+                <FaSignOutAlt /> Logout
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

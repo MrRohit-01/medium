@@ -1,5 +1,3 @@
-
-
 interface SingleBlog {
   title: string
   description: string
@@ -7,25 +5,21 @@ interface SingleBlog {
   date: string
   bio: string
 }
+
 export const SingleBlog = ({ title, description, author, date, bio }: SingleBlog) => {
   return (
-    <div className="flex justify-center gap-5 flex-wrap">
-      <div className=" flex justify-center gap-5">
-        <div className="flex flex-col w-4/12 ">
-          <h1 className="text-5xl font-semibold cursor-pointer break-words">{title}</h1>
-          <h3 className="text-sm mt-2 mb-2 cursor-pointer w-1/2 rounded-xl h-6">Published on {date}</h3>
-          <h3 className="text-xl mb-2 mt-1 cursor-pointer rounded-xl">{description}</h3>
-          <div className="pb-2">
-            <p className=" inline-block px-2 rounded-xl text-sm w-2/12 h-5 "></p></div>
-          <hr className="mb-3"/>    </div>
-        <div className="">
-        <div>Author</div>
-        <div  className="text-2xl
-        font-medium">{author}</div>
-        <div className="text-md ">{bio}</div>
+    <div className="flex justify-center gap-8 flex-wrap p-8 rounded-xl">
+      <div className="flex flex-col w-full md:w-7/12 lg:w-4/12">
+        <h1 className="text-4xl font-extrabold cursor-pointer break-words text-gray-900 leading-tight">{title}</h1>
+        <h3 className="text-sm mt-3 mb-4 text-gray-500 italic">Published on {date}</h3>
+        <h3 className="text-base mb-5 text-gray-700 leading-relaxed">{description}</h3>
+        <hr className="mb-5 border-gray-300" />
       </div>
+      <div className="flex flex-col items-start w-full md:w-4/12 lg:w-3/12 bg-white p-4 rounded-lg">
+        <div className="text-lg font-semibold text-gray-800">Author</div>
+        <div className="text-xl font-medium text-gray-900 mt-2">{author}</div>
+        <div className="text-sm text-gray-600 mt-3 leading-relaxed">{bio}</div>
       </div>
-      </div>
-
+    </div>
   )
 }

@@ -23,19 +23,19 @@ function ButtonData({ button, email, password, name, mode }: Inputbuttonprops) {
     } : {
       email: email,
       password: password
-    }
-      try {
-        const data = await axios.post("http://localhost:8787"+mode, payload);
-        if(!data.data.jwt){
-          return toast(data.data.msg)
-        }
-        localStorage.setItem("token", data.data.jwt)
-        navigate("/blogs")
-
-      } catch (error) {
-        console.error(`${mode.charAt(0) + mode.slice(1)} failed:`, error);
-        alert(`${mode.charAt(0) + mode.slice(1)} failed: Please try again.`);
+    };
+    const endpoint = mode === "signup" ? "/api/v1/user/signup" : "/api/v1/user/signin"; // Correct API endpoint
+    try {
+      const data = await axios.post(`https://backend.rohitkumarbarada.workers.dev${endpoint}`, payload); // Use the correct backend URL
+      if (!data.data.jwt) {
+        return toast(data.data.msg);
       }
+      localStorage.setItem("token", data.data.jwt);
+      navigate("/blogs");
+    } catch (error) {
+      console.error(`${mode.charAt(0).toUpperCase() + mode.slice(1)} failed:`, error);
+      alert(`${mode.charAt(0).toUpperCase() + mode.slice(1)} failed: Please try again.`);
+    }
   };
 
   return (
