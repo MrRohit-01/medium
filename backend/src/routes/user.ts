@@ -30,6 +30,7 @@ userRoutes.use("/me/*",async(c,next)=>{
 userRoutes.post('/signup', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate())
 
     const body =<SignupType> await c.req.json();
@@ -53,6 +54,7 @@ userRoutes.post('/signup', async (c) => {
 userRoutes.post('/signin', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate())
 
   const body =<SigninType> await c.req.json();
@@ -78,6 +80,7 @@ userRoutes.post('/signin', async (c) => {
 userRoutes.get("/me", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate());
 
   try {
@@ -108,6 +111,7 @@ userRoutes.get("/me", async (c) => {
 userRoutes.get('/profile', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate());
 
   try {
@@ -123,7 +127,7 @@ userRoutes.get('/profile', async (c) => {
 
     return c.json(user);
   } catch (error) {
-    return c.json({ msg: "Failed to fetch profile" }, 500);
+    return c.json({error}, 500);
   } finally {
     await prisma.$disconnect();
   }
@@ -132,6 +136,7 @@ userRoutes.get('/profile', async (c) => {
 userRoutes.put('/profile', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate());
 
   try {
