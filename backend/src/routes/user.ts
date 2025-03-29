@@ -214,12 +214,7 @@ userRoutes.post('/logout', async (c) => {
       return c.json({ msg: "Authorization failed: Missing or invalid user token." }, 400);
     }
 
-    // Invalidate all tokens for the user (e.g., by updating a token version or blacklist)
-    await prisma.user.update({
-      where: { id: userId },
-      data: { tokenVersion: { increment: 1 } }, // Example: Increment token version
-    });
-
+    // Remove token invalidation logic
     return c.json({ msg: "Logged out successfully" });
   } catch (error) {
     console.error("Failed to logout user:", error);
