@@ -16,25 +16,30 @@ export const Useblog = () => {
   const [blogs, setBlogs] = useRecoilState<BlogType[]>(blogsState)
   useEffect(() => {
 
-    
     const fetchData = async () => {
       if (blogs.length > 0) {
-   
         setLoading(false);
         return;
       }
       try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found in localStorage");
+          return [];
+        }
+
         const response = await axios.get("https://backend.rohitkumarbarada.workers.dev/api/v1/blog/bulk", {
           headers: {
-            Authorization:"Bearer "+localStorage.getItem("token")
-          }
-        })
-        setBlogs(response.data)
+            Authorization: `Bearer ${token}`, // Ensure the token is included
+          },
+        });
+
+        setBlogs(response.data);
       } catch (e) {
-        console.log("data didn't fetch")
-        return []
+        console.error("Failed to fetch blogs:", e);
+        return [];
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
     fetchData()

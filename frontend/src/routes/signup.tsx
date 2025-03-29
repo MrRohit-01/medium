@@ -5,8 +5,10 @@ import Heading from "../components/heading";
 import SubHeading from "../components/subheadling";
 import LoginReview from "../components/login-review";
 import { SignupType } from "@rohitnpmdata/common-data-app";
+import {Navigate, useNavigate } from 'react-router-dom';
 
 function Signup() {
+  const navigate = useNavigate();
   return (
   
 
@@ -38,6 +40,36 @@ function InputField() {
     email: "",
     password: ""
   });
+  const navigate = useNavigate();
+
+  const signInAsGuest = async () => {
+    const guestData = {
+      email: "rohit000@gmail.com",
+      password: "123456789",
+    };
+
+    try {
+      const response = await fetch("https://backend.rohitkumarbarada.workers.dev/api/v1/user/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(guestData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Guest signed in successfully:", data);
+        localStorage.setItem("token", data.jwt); // Store the token in localStorage
+        navigate("/blogs"); // Navigate after storing the token
+      } else {
+        console.error("Failed to sign in as guest");
+      }
+    } catch (error) {
+      console.error("Error during guest sign-in:", error);
+    }
+  };
+
   return (
     <>
       <InputData onchange={(e)=>{
@@ -65,6 +97,12 @@ function InputField() {
         button="Sign up" 
         mode="signup" 
       />
+      <button 
+        onClick={signInAsGuest} 
+        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded w-full"
+      >
+        Sign in as Guest
+      </button>
     </>
   );
 }
