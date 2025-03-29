@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import randomColor from "./randomColor"; // Import the randomColor function
-import { FaUser, FaCog, FaSignOutAlt } from "react-icons/fa"; // Import icons
+import { FaUserCircle, FaBook, FaPowerOff } from "react-icons/fa"; // Updated icons
 
 interface ResponseData {
   name: string;
@@ -73,25 +73,25 @@ export const AppBar = () => {
           {user.name.charAt(0).toUpperCase()}
         </div>
         {dropdownOpen && (
-          <div className="absolute right-0 mt-12 bg-white border rounded shadow-lg">
+          <div className="absolute right-0 mt-12 bg-white border rounded shadow-lg w-44">
             <ul className="text-sm">
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
                 onClick={() => navigate("/profile")}
               >
-                <FaUser /> Profile
+                <FaUserCircle /> Profile
               </li>
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
-                onClick={() => navigate("/settings")}
+                onClick={() => navigate("/me/posts")}
               >
-                <FaCog /> Settings
+                <FaBook /> My Posts
               </li>
               <li
                 className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
                 onClick={handleLogout}
               >
-                <FaSignOutAlt /> Logout
+                <FaPowerOff /> Logout
               </li>
             </ul>
           </div>
