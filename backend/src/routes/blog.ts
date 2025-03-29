@@ -12,7 +12,7 @@ export const blogRoutes = new Hono<{
     JWT_SECRET: string,
   },
   Variables:{
-    id :string
+    userId :string
   }
 }>()
 
@@ -22,7 +22,7 @@ blogRoutes.all("/*",async (c,next)=>{
     log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate())
   const bearerToken = c.req.header('authorization')
-  const token = bearerToken?.split(" ")[1]
+  const token = bearerToken?.startsWith("Bearer ") ? bearerToken.split(" ")[1] : null; // Ensure 'Bearer' prefix is handled
   if(!token){
     return c.text("access denied")
   }
@@ -42,7 +42,7 @@ blogRoutes.all("/*",async (c,next)=>{
     if(!user){
       return c.text("user doesn't exist")
     }
-    c.set('id',user.id)
+    c.set('userId',user.id)
     await next()
 })
 
@@ -60,10 +60,10 @@ blogRoutes.post('/',async (c) => {
       msg: "error schema"
     })
   }
-  const id = c.get('id')  
+  const userId = c.get('userId')  
     const response = await prisma.post.create({
       data:{
-        authorId:id,
+        authorId:userId,
         title: body.title,
         context: body.context
       },
@@ -83,12 +83,12 @@ blogRoutes.put('/',async (c) => {
 
   const body =<PutType> await c.req.json()
   
-  const id = c.get('id')
+  const userId = c.get('userId')
 
     const response = await prisma.post.update({
       where:{
         id:body.id,
-        authorId:id,
+        authorId:userId,
       },
       data:{
         title:body.title,
@@ -132,10 +132,11 @@ blogRoutes.get('/delete/:id',async (c) => {
   }).$extends(withAccelerate())
 
   const id = c.req.param('id')
+  const userId = c.get('userId')
   const response = await prisma.post.delete({
     where:{
       id:id,
-     authorId:c.get('id')
+     authorId:userId
     }
   })
 })
@@ -171,10 +172,10 @@ blogRoutes.get('/me/posts', async (c) => {
     log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate())
 
-  const id = c.get('id')
+  const userId = c.get('userId')
   const response = await prisma.post.findMany({
     where: {
-      authorId: id,
+      authorId: userId,
     },
     select: {
       id: true,
