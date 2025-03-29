@@ -24,7 +24,7 @@ function ButtonData({ button, email, password, name, mode }: Inputbuttonprops) {
       email: email,
       password: password
     };
-    const endpoint = mode === "signup" ? "/api/v1/user/signup" : "/api/v1/user/signin"; // Correct API endpoint
+    const endpoint = mode === "signup" ? "/api/v1/user/" : "/api/v1/user/signin"; // Correct API endpoint
     try {
       const data = await axios.post(`https://backend.rohitkumarbarada.workers.dev${endpoint}`, payload); // Use the correct backend URL
       if (!data.data.jwt) {
