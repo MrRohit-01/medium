@@ -5,10 +5,10 @@ import Heading from "../components/heading";
 import SubHeading from "../components/subheadling";
 import LoginReview from "../components/login-review";
 import { SignupType } from "@rohitnpmdata/common-data-app";
-import {Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
   
 
@@ -99,7 +99,7 @@ function InputField() {
       />
       <button 
         onClick={signInAsGuest} 
-        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded w-full"
+        className="max-sm:w-full w-96 bg-black text-white border rounded-md py-1.5 px-2 text-md font-medium"
       >
         Sign in as Guest
       </button>
