@@ -24,6 +24,7 @@ userRoutes.use("/me/*",async(c,next)=>{
   }
   const response = await verify(token,c.env.JWT_SECRET)
   c.set("userId", response.id as string);
+  console.log(response)
   await next()
 })
 
@@ -31,25 +32,46 @@ userRoutes.post('/signup', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
     log: ['query', 'info', 'warn', 'error'], // Add logging
-  }).$extends(withAccelerate())
+  }).$extends(withAccelerate());
 
-    const body =<SignupType> await c.req.json();
-    const {success} = Signup.safeParse(body)
-    if(!success){
-      return c.json({msg:"invalid schema"})
+  const body = await c.req.json();
+  const parseResult = Signup.safeParse(body);
+
+  if (!parseResult.success) {
+    return c.json({ msg: "Invalid schema", errors: parseResult.error.errors }, 400);
+  }
+
+  try {
+    // Check if the email already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email: parseResult.data.email },
+    });
+
+    if (existingUser) {
+      return c.json({ error: 'Email already in use' }, 400);
     }
+
+    // Create a new user
     const response = await prisma.user.create({
       data: {
-        email: body.email,
-        name:body.name,
-        password: body.password,
-      }
-    })
-    const token = await sign({ id: response.id }, c.env.JWT_SECRET)
-    return c.json({ jwt: token });
-  
-})
+        email: parseResult.data.email,
+        name: parseResult.data.name,
+        password: parseResult.data.password,
+      },
+    });
 
+    const token = await sign({ id: response.id }, c.env.JWT_SECRET);
+    return c.json({ jwt: token });
+  } catch (error: any) {
+    if (error.code === 'P2002') {
+      return c.json({ error: 'Unique constraint failed on the email field' }, 400);
+    } else {
+      return c.json({ error: 'Internal Server Error' }, 500);
+    }
+  } finally {
+    await prisma.$disconnect();
+  }
+});
 
 userRoutes.post('/signin', async (c) => {
   const prisma = new PrismaClient({
@@ -108,7 +130,7 @@ userRoutes.get("/me", async (c) => {
   }
 });
 
-userRoutes.get('/profile', async (c) => {
+userRoutes.get('/me/profile', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
     log: ['query', 'info', 'warn', 'error'], // Add logging
@@ -116,6 +138,13 @@ userRoutes.get('/profile', async (c) => {
 
   try {
     const userId = c.get("userId");
+    if (!userId) {
+      return c.json(
+        { msg: "Authorization failed: Missing or invalid user token. Please log in again." },
+        400
+      );
+    }
+
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { id: true, name: true, email: true },
@@ -127,13 +156,13 @@ userRoutes.get('/profile', async (c) => {
 
     return c.json(user);
   } catch (error) {
-    return c.json({error}, 500);
+    return c.json({ msg: "Failed to fetch profile", error }, 500);
   } finally {
     await prisma.$disconnect();
   }
 });
 
-userRoutes.put('/profile', async (c) => {
+userRoutes.put('/me/profile', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
     log: ['query', 'info', 'warn', 'error'], // Add logging
@@ -141,6 +170,13 @@ userRoutes.put('/profile', async (c) => {
 
   try {
     const userId = c.get("userId");
+    if (!userId) {
+      return c.json(
+        { msg: "Authorization failed: Missing or invalid user token. Please log in again." },
+        400
+      );
+    }
+
     const body = await c.req.json();
     const updateData: { name?: string; email?: string; password?: string } = {
       name: body.name,

@@ -10,7 +10,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await axios.get("https://backend.rohitkumarbarada.workers.dev/api/v1/user/profile", {
+        const response = await axios.get("https://backend.rohitkumarbarada.workers.dev/api/v1/user/me/profile", {
           headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         });
         setProfile({ name: response.data.name, password: "" }); // Initialize password as empty
@@ -32,7 +32,7 @@ const Profile = () => {
       }
 
       const response = await axios.put(
-        "https://backend.rohitkumarbarada.workers.dev/api/v1/user/profile",
+        "https://backend.rohitkumarbarada.workers.dev/api/v1/user/me/profile",
         updateData,
         { headers: { Authorization: "Bearer " + localStorage.getItem("token") } }
       );

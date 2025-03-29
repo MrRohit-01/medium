@@ -19,6 +19,7 @@ export const blogRoutes = new Hono<{
 blogRoutes.all("/*",async (c,next)=>{
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate())
   const bearerToken = c.req.header('authorization')
   const token = bearerToken?.split(" ")[1]
@@ -49,6 +50,7 @@ blogRoutes.post('/',async (c) => {
 
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate())
 
   const body =<PostType> await c.req.json()
@@ -76,6 +78,7 @@ blogRoutes.post('/',async (c) => {
 blogRoutes.put('/',async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate())
 
   const body =<PutType> await c.req.json()
@@ -104,6 +107,7 @@ blogRoutes.get('/bulk',async (c) => {
 
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate())
   const response = await prisma.post.findMany({
     select:{
@@ -124,6 +128,7 @@ blogRoutes.get('/delete/:id',async (c) => {
 
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate())
 
   const id = c.req.param('id')
@@ -138,6 +143,7 @@ blogRoutes.get('/:id',async (c) => {
 
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
   }).$extends(withAccelerate())
 
   const id = c.req.param('id')
@@ -157,5 +163,25 @@ blogRoutes.get('/:id',async (c) => {
     }
   })
   return c.json(responseData)
+})
+
+blogRoutes.get('/me/posts', async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+    log: ['query', 'info', 'warn', 'error'], // Add logging
+  }).$extends(withAccelerate())
+
+  const id = c.get('id')
+  const response = await prisma.post.findMany({
+    where: {
+      authorId: id,
+    },
+    select: {
+      id: true,
+      title: true,
+      context: true,
+    },
+  })
+  return c.json(response)
 })
 
